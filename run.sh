@@ -11,7 +11,14 @@ if [ ! -f $db_path/.mongodb_password_set ]; then
     /set_mongodb_password.sh
 fi
 
-cmd='mongod --nojournal --httpinterface --rest'
+cmd="mongod"
+if [ "$JOURNAL" == "yes" ]; then
+	cmd="$cmd --journal"
+else
+	cmd="$cmd --nojournal"
+fi
+
+cmd="$cmd --httpinterface --rest"
 if [ "$AUTH" == "yes" ]; then
     cmd="$cmd --auth"
 fi
